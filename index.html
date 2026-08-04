@@ -1,152 +1,335 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>BetterBlox – The Better Way to Play Roblox</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>BetterBLOX — The Better Way to Play Roblox</title>
 <style>
-  body {
-    margin: 0;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background: #0b0f19;
-    color: #e5e7eb;
+  :root{
+    --bg:#07101a;
+    --panel:#0f1724;
+    --muted:#9aa6b6;
+    --accent:#38bdf8;
+    --card:#0b1220;
+    --glass: rgba(255,255,255,0.03);
+    --radius:12px;
+    --gap:20px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background:linear-gradient(180deg,var(--bg),#04101a 60%);
+    color:#e6eef6;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height:1.45;
   }
 
-  header {
-    background: #0f172a;
-    padding: 18px 32px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #1e293b;
+  /* Header */
+  header{
+    position:sticky; top:0; z-index:60;
+    backdrop-filter: blur(6px);
+    background: linear-gradient(180deg, rgba(6,10,16,0.6), rgba(6,10,16,0.35));
+    border-bottom:1px solid rgba(255,255,255,0.03);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 28px;
   }
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{
+    font-weight:800; font-size:18px; color:var(--accent);
+    letter-spacing:0.6px;
+  }
+  nav a{
+    color:var(--muted); text-decoration:none; margin-left:18px; font-size:14px;
+  }
+  nav a:hover{color:#e6eef6}
 
-  .logo {
-    font-size: 22px;
-    font-weight: 700;
-    color: #38bdf8;
-  }
+  /* Layout */
+  .wrap{max-width:1100px;margin:28px auto;padding:0 20px;display:grid;grid-template-columns:1fr 320px;gap:28px;align-items:start}
+  @media (max-width:980px){ .wrap{grid-template-columns:1fr; padding-bottom:60px} .side{position:static; width:auto} }
 
-  nav a {
-    margin-left: 20px;
-    color: #94a3b8;
-    text-decoration: none;
-    font-size: 14px;
+  /* Hero */
+  .hero{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    border:1px solid rgba(255,255,255,0.03);
+    padding:36px;border-radius:14px;
   }
+  .hero .count{color:var(--accent); font-weight:700; font-size:13px; letter-spacing:0.08em}
+  .hero h1{font-size:36px;margin:12px 0 8px}
+  .hero p{color:var(--muted);max-width:760px}
+  .hero .cta{margin-top:18px;display:flex;gap:12px;flex-wrap:wrap}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;font-weight:700;text-decoration:none;font-size:14px;
+  }
+  .btn.primary{background:var(--accent);color:#07101a}
+  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+  .small{font-size:13px;color:var(--muted);margin-top:12px}
 
-  nav a:hover {
-    color: #e2e8f0;
+  /* Side info panel */
+  .side{
+    position:sticky; top:84px;
+    width:320px;
+    background:linear-gradient(180deg,var(--panel), rgba(10,14,20,0.6));
+    border-radius:var(--radius);
+    padding:18px;
+    border:1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 6px 30px rgba(2,6,12,0.6);
+    height:fit-content;
   }
+  .side h4{margin:0 0 8px;font-size:13px;color:var(--muted);letter-spacing:0.06em}
+  .side .current{font-weight:800;color:#fff;margin-bottom:10px}
+  .side .list{display:flex;flex-direction:column;gap:8px}
+  .pill{background:var(--glass);padding:8px 10px;border-radius:999px;font-size:13px;color:var(--muted);display:inline-block}
 
-  .hero {
-    text-align: center;
-    padding: 60px 20px;
+  /* Sections */
+  section{margin-bottom:28px; opacity:0; transform:translateY(18px); transition:all 520ms cubic-bezier(.2,.9,.2,1); will-change:transform,opacity}
+  section.visible{opacity:1; transform:none}
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    border:1px solid rgba(255,255,255,0.03);
+    padding:18px;border-radius:12px;margin-bottom:12px;
   }
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:640px){ .grid-2{grid-template-columns:1fr} }
 
-  .hero h1 {
-    font-size: 40px;
-    font-weight: 800;
-    color: #f8fafc;
-    margin-bottom: 10px;
-  }
+  /* Feature list */
+  .feature-title{font-weight:800;margin-bottom:6px}
+  .muted{color:var(--muted);font-size:14px}
 
-  .hero p {
-    max-width: 700px;
-    margin: 0 auto;
-    font-size: 16px;
-    color: #cbd5e1;
-    line-height: 1.6;
-  }
+  /* Reviews */
+  .review{padding:12px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02)}
+  .review b{display:block;color:#fff}
 
-  .count {
-    font-size: 14px;
-    color: #38bdf8;
-    margin-bottom: 10px;
-    letter-spacing: 0.05em;
-  }
+  /* Footer */
+  footer{margin-top:28px;padding:22px;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid rgba(255,255,255,0.02)}
+  a.link{color:var(--accent);text-decoration:none}
 
-  .buttons {
-    margin-top: 30px;
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-
-  .btn {
-    padding: 12px 20px;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 600;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .btn-primary {
-    background: #38bdf8;
-    color: #0f172a;
-  }
-
-  .btn-primary:hover {
-    background: #0ea5e9;
-  }
-
-  .btn-secondary {
-    background: #1e293b;
-    color: #e2e8f0;
-    border: 1px solid #334155;
-  }
-
-  .btn-secondary:hover {
-    background: #334155;
-  }
-
-  footer {
-    text-align: center;
-    padding: 20px;
-    font-size: 12px;
-    color: #64748b;
-    border-top: 1px solid #1e293b;
-    margin-top: 40px;
-  }
+  /* small helpers */
+  .meta{display:flex;gap:8px;flex-wrap:wrap}
+  .badge{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:8px;font-size:13px;color:var(--muted)}
+  .screenshot{height:160px;border-radius:10px;background:linear-gradient(135deg,#071827,#0b1b2a);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;border:1px dashed rgba(255,255,255,0.03)}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">BetterBlox</div>
+  <div class="brand">
+    <div class="logo">BetterBLOX</div>
+    <div style="font-size:12px;color:var(--muted)">Advanced tools for the modern Roblox player</div>
+  </div>
   <nav>
     <a href="#overview">Overview</a>
-    <a href="#premium">Premium</a>
-    <a href="#faq">FAQ</a>
-    <a href="#support">Support</a>
+    <a href="#features">Features</a>
+    <a href="#screenshots">Screenshots</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#install">Install</a>
   </nav>
 </header>
 
-<section class="hero">
-  <div class="count">114,212+ PLAYERS UPGRADED</div>
-  <h1>The Better Way to Play Roblox</h1>
-  <p>
-    A cleaner, darker Roblox with the tools it always needed — last‑online tracking,
-    region selection, a 3D avatar renderer, trade tools and a desktop launcher.
-    Free to start.
-  </p>
+<main class="wrap" id="main">
+  <div>
 
-  <div class="buttons">
-    <a class="btn btn-primary" href="#">Add to Chrome — Free</a>
-    <a class="btn btn-secondary" href="#">Get the Desktop Launcher</a>
+    <!-- HERO -->
+    <article class="hero" id="overview">
+      <div class="count">114,212+ PLAYERS UPGRADED</div>
+      <h1>THE BETTER WAY TO PLAY ROBLOX</h1>
+      <p>A cleaner, darker Roblox with the tools it always needed — last-online tracking, region selection, a 3D avatar renderer, trade tools and a desktop launcher. Free to start.</p>
+
+      <div class="cta">
+        <a class="btn primary" href="#" aria-label="Add to Chrome">Add to Chrome — Free</a>
+        <a class="btn ghost" href="#" aria-label="Get the Desktop Launcher">Get the Desktop Launcher</a>
+      </div>
+
+      <div class="small">Free on Chrome, Edge &amp; Firefox • Windows launcher • No sign-up to start</div>
+    </article>
+
+    <!-- FAN FAVOURITE -->
+    <section id="features" class="card">
+      <div class="feature-title">FAN FAVOURITE</div>
+      <div class="muted">Last Seen &amp; online alerts</div>
+      <p style="margin-top:10px">See exactly when your friends were last online — and get notified the second they hop on or join a game.</p>
+
+      <div style="margin-top:12px" class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <div style="font-weight:800">STATUS: ONLINE</div>
+            <div class="muted">Last seen: Just now</div>
+          </div>
+          <div style="text-align:right">
+            <div class="muted">Server Region Selector</div>
+            <div style="margin-top:8px" class="meta">
+              <span class="badge">US</span>
+              <span class="badge">DE</span>
+              <span class="badge">NL</span>
+              <span class="badge">BR</span>
+              <span class="badge">JP</span>
+              <span class="badge">SG</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:14px" class="grid-2">
+        <div>
+          <div class="feature-title">3D avatar &amp; outfit previews</div>
+          <div class="muted">Rotate avatars and outfits in full 3D, right on the profile page.</div>
+        </div>
+        <div>
+          <div class="feature-title">Communities, cleaner</div>
+          <div class="muted">Groups and communities themed to match the rest of BetterBLOX.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REAL SCREENSHOTS -->
+    <section id="screenshots" class="card">
+      <div class="feature-title">Real screenshots</div>
+      <div class="muted">See BetterBLOX in action — actual screenshots from the app, not mockups.</div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:12px">
+        <div class="screenshot">Screenshot 1</div>
+        <div class="screenshot">Screenshot 2</div>
+        <div class="screenshot">Screenshot 3</div>
+      </div>
+
+      <div style="margin-top:14px">
+        <div class="feature-title">Your Roblox home, redesigned</div>
+        <div class="muted">Friends, games and presence in one cleaner, darker dashboard.</div>
+      </div>
+    </section>
+
+    <!-- EVERYTHING BETTERBLOX ADDS -->
+    <section id="everything" class="card">
+      <div class="feature-title">Everything BetterBLOX adds</div>
+      <div class="muted">One install upgrades Roblox across your browser and desktop. Here's a taste.</div>
+
+      <ul style="margin-top:12px;line-height:1.6;color:var(--muted)">
+        <li><strong>Last seen &amp; online alerts</strong> — See when friends were last online and get pinged the moment they hop on.</li>
+        <li><strong>Server region selector</strong> — Pick the datacenter you connect to for lower ping.</li>
+        <li><strong>3D avatar renderer</strong> — Rotate and preview avatars and outfits in full 3D.</li>
+        <li><strong>Item, value &amp; trade tools</strong> — Item analytics, Rolimons values and trade scam preview.</li>
+        <li><strong>Playtime &amp; XP tracking</strong> — Track time played and watch your stats grow.</li>
+        <li><strong>FastFlags &amp; multi-account</strong> — Tune graphics and run multiple accounts in the launcher.</li>
+      </ul>
+    </section>
+
+    <!-- REVIEWS -->
+    <section id="reviews" class="card">
+      <div class="feature-title">What Users Say</div>
+      <div style="margin-top:12px;display:grid;gap:10px">
+        <div class="review"><b>Tyler M.</b>"Been using this for months and it's honestly a game changer. The server region picker alone is worth it — no more lag."</div>
+        <div class="review"><b>xX_ShadowKnight_Xx</b>"finally a roblox extension that isnt full of ads and actually works. the dark theme looks so clean."</div>
+        <div class="review"><b>Sophia R.</b>"Love seeing which of my friends are online and what they're playing. Way faster than the other extensions."</div>
+        <div class="review"><b>RBLX_Mason</b>"the trade scam warning literally saved me from a really bad deal lol. 10/10."</div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section id="install" class="card">
+      <div class="feature-title">Ready to upgrade Roblox?</div>
+      <p class="muted">Join thousands of players. Free to start — no sign-up needed.</p>
+      <div style="margin-top:12px" class="cta">
+        <a class="btn primary" href="#">Install Browser Extension</a>
+        <a class="btn ghost" href="#">Windows Launcher</a>
+      </div>
+    </section>
+
+    <footer>
+      BetterBLOX is an unofficial fan-made launcher and is not endorsed by Roblox Corporation. © 2025 BetterBLOX. All rights reserved.
+    </footer>
   </div>
 
-  <p style="margin-top:20px; font-size:13px; color:#94a3b8;">
-    Free on Chrome, Edge & Firefox • Windows launcher • No sign‑up to start
-  </p>
-</section>
+  <!-- SIDE PANEL -->
+  <aside class="side" aria-hidden="false">
+    <h4>BetterBLOX themed Roblox home</h4>
+    <div class="current" id="side-current">Trusted by 114,212+ players</div>
 
-<footer>
-  BetterBlox is an unofficial fan‑made launcher and is not endorsed by Roblox Corporation.
-</footer>
+    <div style="margin-bottom:12px" class="meta">
+      <span class="pill">Chrome</span>
+      <span class="pill">Edge</span>
+      <span class="pill">Firefox</span>
+      <span class="pill">Windows Launcher</span>
+    </div>
+
+    <div style="margin-top:12px">
+      <div style="font-size:13px;color:var(--muted);margin-bottom:8px">Scroll to learn</div>
+      <div class="list" id="side-list">
+        <div class="pill" data-target="features">Last Seen & online alerts</div>
+        <div class="pill" data-target="screenshots">Real screenshots</div>
+        <div class="pill" data-target="everything">Everything BetterBLOX adds</div>
+        <div class="pill" data-target="reviews">What Users Say</div>
+        <div class="pill" data-target="install">Install options</div>
+      </div>
+    </div>
+  </aside>
+</main>
+
+<script>
+  // Smooth scroll for nav and side pills
+  document.querySelectorAll('a[href^="#"], .pill[data-target]').forEach(el=>{
+    el.addEventListener('click', e=>{
+      e.preventDefault();
+      const target = el.getAttribute('href') ? document.querySelector(el.getAttribute('href')) : document.getElementById(el.dataset.target);
+      if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  });
+
+  // IntersectionObserver to reveal sections and update side panel text
+  const sections = document.querySelectorAll('main article, main section');
+  const sideCurrent = document.getElementById('side-current');
+  const sideList = document.getElementById('side-list');
+
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        // update side text based on id
+        const id = entry.target.id;
+        switch(id){
+          case 'overview':
+            sideCurrent.textContent = 'Trusted by 114,212+ players';
+            break;
+          case 'features':
+            sideCurrent.textContent = 'Last Seen & online alerts';
+            break;
+          case 'screenshots':
+            sideCurrent.textContent = 'Real screenshots';
+            break;
+          case 'everything':
+            sideCurrent.textContent = 'Everything BetterBLOX adds';
+            break;
+          case 'reviews':
+            sideCurrent.textContent = 'What Users Say';
+            break;
+          case 'install':
+            sideCurrent.textContent = 'Install: Chrome, Edge, Firefox, Windows';
+            break;
+          default:
+            sideCurrent.textContent = 'Trusted by 114,212+ players';
+        }
+        // highlight pill
+        sideList.querySelectorAll('.pill').forEach(p=>p.style.opacity=0.6);
+        const pill = sideList.querySelector(`[data-target="${id}"]`);
+        if(pill) pill.style.opacity = 1;
+      }
+    });
+  }, {threshold:0.36});
+
+  sections.forEach(s=>io.observe(s));
+
+  // initial reveal for hero
+  document.getElementById('overview').classList.add('visible');
+
+  // keyboard accessibility: allow focusing pills
+  document.querySelectorAll('.pill').forEach(p=>{
+    p.tabIndex = 0;
+    p.addEventListener('keydown', e=>{
+      if(e.key === 'Enter' || e.key === ' ') p.click();
+    });
+  });
+</script>
 
 </body>
 </html>
